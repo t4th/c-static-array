@@ -39,7 +39,7 @@ void* array_dereference( const struct array_header a_header, void * const ap_dat
     {                                                \
         .m_length = length,                          \
         .m_type_size = sizeof( type),                \
-        .m_size_in_bytes = { length * sizeof( type)} \
+        .m_size_in_bytes = (length * sizeof( type))  \
     };                                               \
     name##_type name##_array_data[ length]           \
 
