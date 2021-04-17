@@ -17,22 +17,22 @@ int main(void)
 
     printf( "array size = %zu bytes\n", array_size( my_array));
 
-    float read0 = array_at( float, my_array, 2);
+    float read0 = array_at( my_array, 2);
 
-    array_at( float, my_array, 5) = 5.23f;
+    array_at( my_array, 5) = 5.23f;
 
-    float read1 = array_at( float, my_array, 5);
+    float read1 = array_at( my_array, 5);
 
     array_loop_in_range( my_array, i)
     {
-        printf( "%zu = %lf\n", i, array_at( float, my_array, i));
+        printf( "%zu = %lf\n", i, array_at( my_array, i));
     }
 
     // out of bound read
-    float read2 = array_at( float, my_array, 10);
+    float read2 = array_at( my_array, 10);
     
     // out of bound write
-    array_at( float, my_array, 15) = 56.123f;
+    array_at( my_array, 15) = 56.123f;
 
     return 0;
 }

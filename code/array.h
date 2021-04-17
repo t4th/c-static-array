@@ -34,19 +34,20 @@ void* array_dereference( const struct array_header a_header, void * const ap_dat
 }
 
 #define array( type, length, name)                   \
+    typedef struct { type m_type; } name##_type;     \
     struct array_header name##_header =              \
     {                                                \
         .m_length = length,                          \
         .m_type_size = sizeof( type),                \
         .m_size_in_bytes = { length * sizeof( type)} \
     };                                               \
-    type name##_array_data[ length]                  \
+    name##_type name##_array_data[ length]           \
 
 #define array_length( name)     name##_header.m_length
 #define array_len( name)        array_length(name)
 
 #define array_size( name)     name##_header.m_size_in_bytes
 
-#define array_at( type, name, index) *( type*)array_dereference( name##_header, name##_array_data, index)
+#define array_at( name, index) (( name##_type*)array_dereference( name##_header, name##_array_data, index))->m_type
 
 #define array_loop_in_range( name, iterator_name) size_t iterator_name = 0U; for (; iterator_name < name##_header.m_length; ++iterator_name)

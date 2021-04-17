@@ -8,8 +8,6 @@ Current implemention call user defined function when out of boundary access occu
 
 It is user job to handle this error however he seems fit. Invalidating the data seems to be the most obvious.
 
-Since I have not yet found way to pass/keep type in C, it must be passed as argument when accessing data.
-
 ## todo:
 
 ### decide on passing out-of-bound callback: each array has its own/file scope/system scope
@@ -29,13 +27,14 @@ struct array_header
 } array_header;
 
 #define array( type, length, name)                   \
+    typedef struct { type m_type; } name##_type;     \
     struct array_header name##_header =              \
     {                                                \
         .m_length = length,                          \
         .m_type_size = sizeof( type),                \
         .m_size_in_bytes = { length * sizeof( type)} \
     };                                               \
-    type name##_array_data[ length]                  \
+    name##_type name##_array_data[ length]           \
 ```
 
 Like usual in this case, accessing array_header or array_data directly result in undefined behaviour.
@@ -43,14 +42,14 @@ Like usual in this case, accessing array_header or array_data directly result in
 ## api
 
 ```c
-array_length( name)  // return legnth, ie. number of elements in an array
-array_len( name)     // alias to array_length
+#define array_length( name)  // return legnth, ie. number of elements in an array
+#define array_len( name)     // alias to array_length
 
-array_size( name)   // return size in bytes or an array
+#define array_size( name)   // return size in bytes or an array
 
-array_at( type, name, index) // access element of an array. can be used to read or write.
+#define array_at( name, index) // access element of an array. can be used to read or write.
 
-array_loop_in_range( name, iterator_name) // jsut wrapped for-loop :P
+#define array_loop_in_range( name, iterator_name) // jsut wrapped for-loop :P
 ```
 
 ## usage
@@ -75,22 +74,22 @@ int main(void)
 
     printf( "array size = %zu bytes\n", array_size( my_array));
 
-    float read0 = array_at( float, my_array, 2);
+    float read0 = array_at( my_array, 2);
 
-    array_at( float, my_array, 5) = 5.23f;
+    array_at( my_array, 5) = 5.23f;
 
-    float read1 = array_at( float, my_array, 5);
+    float read1 = array_at( my_array, 5);
 
     array_loop_in_range( my_array, i)
     {
-        printf( "%zu = %lf\n", i, array_at( float, my_array, i));
+        printf( "%zu = %lf\n", i, array_at( my_array, i));
     }
 
     // out of bound read
-    float read2 = array_at( float, my_array, 10);
+    float read2 = array_at( my_array, 10);
     
     // out of bound write
-    array_at( float, my_array, 15) = 56.123f;
+    array_at( my_array, 15) = 56.123f;
 
     return 0;
 }
