@@ -34,5 +34,22 @@ int main(void)
     // out of bound write
     array_at( my_array, 15) = 56.123f;
 
+    struct my_struct
+    {
+        int a;
+        int b;
+        int c;
+    };
+    
+    // Initialize only element 1
+    array( struct my_struct, 10, my_struct_array) = {[1] = (struct my_struct){ .a = 1, .b = 2, .c = 3}};
+
+    printf( "my_struct_array.a = %d\n", array_at( my_struct_array, 1).a);
+
+    // out of bound read - read from element [0] instead
+    printf( "my_struct_array.b = %d\n", array_at( my_struct_array, 10).b);
+
+    printf( "my_struct_array.c = %d\n", array_at( my_struct_array, 1).c);
+
     return 0;
 }
