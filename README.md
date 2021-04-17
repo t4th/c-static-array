@@ -15,7 +15,7 @@ It is user job to handle this error however he seems fit. Invalidating the data 
 ### decide what to when out-of-bound occurs: currently just return pointer to 1st element since its always available
 
 ## how
-For each instance of an array this macro is creating instance of an array_header.
+For each instance of an array this macro is creating instance of an array_header and type definition of array_type.
 Information from this header is later used to validate c-style array access.
 
 ```c
@@ -42,6 +42,8 @@ Like usual in this case, accessing array_header or array_data directly result in
 ## api
 
 ```c
+#define array( type, length, name) // create static array
+
 #define array_length( name)  // return legnth, ie. number of elements in an array
 #define array_len( name)     // alias to array_length
 
@@ -49,7 +51,7 @@ Like usual in this case, accessing array_header or array_data directly result in
 
 #define array_at( name, index) // access element of an array. can be used to read or write.
 
-#define array_loop_in_range( name, iterator_name) // jsut wrapped for-loop :P
+#define array_loop_in_range( name, iterator_name) // just wrapped for-loop :P
 ```
 
 ## usage
