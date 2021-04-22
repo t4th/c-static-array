@@ -6,13 +6,13 @@
     #define array_assert( x)
 #endif
 
-#define array_declare( type, length, name) \
+#define array_declare( type, length, type_name) \
     typedef struct                                                  \
     {                                                               \
         type m_data[ length];                                       \
-    } name;                                                         \
+    } type_name;                                                         \
                                                                     \
-    type * name##_array_at( name * ap_data, size_t a_index)         \
+    type * type_name##_array_at( type_name * ap_data, size_t a_index)         \
     {                                                               \
         if ( a_index < length)                                      \
         {                                                           \
@@ -24,14 +24,14 @@
             return &ap_data->m_data[ 0];                            \
         }                                                           \
     }                                                               \
+    size_t type_name##_array_length(void) { return length; }\
+    size_t type_name##_array_size(void) { return sizeof(type_name); }\
 
-#define array( type, length, name) \
-    name##_data_type name##_data;                   \
+#define array( type_name, name) type_name name
 
-#define array_at( name, index) name##_array_at( &name, index)
+#define array_at( type_name, name, index) *type_name##_array_at( &name, index)
 
-#define array_length( name)
-#define array_len( name)
+#define array_length( type_name, name) type_name##_array_length()
+#define array_len( type_name, name) array_length(name)
 
-#define array_size( name)
-#define array_loop_in_range( name, iterator_name)
+#define array_size( type_name, name) type_name##_array_size()
