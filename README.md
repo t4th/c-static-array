@@ -156,3 +156,15 @@ int main(void)
 This fun little prove of concept shows that achieving good defensive programming in C is not only hard, but not practical at all.
 
 It also shows the reason behind initial C++ template implemention, which achieved best of both solutions with nice code syntax and not so nice linker errors ;).
+
+## other solutions
+Catching out of an out of bound errors is hard, but there are some other way of finding it, like carefully tracking stack overflows:
+ 
+- some compilers can attach "magic numer" to callstack and after funtion return, implicitly attached code check if magic number has been overwritten. See --protect_stack flag in Keil arm compiler
+
+- there is also possibility to use MPU to track stack boundaries and act accordingly when such event occurs.
+- If MPU is not available this can be done manually, by placing magic numbers on stack begin/end and periodically check if these has been overwritten.
+
+- in some cases it is even possible to define address 0 in MPU as restricted and get memory fault exception when it occurs.
+
+- most architecture has some kind of restricted memory regions and placing stack (depending if descending/rising) and such boundary can track restricted memory access resultingin exception instead of undefined behaviour.
