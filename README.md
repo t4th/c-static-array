@@ -11,7 +11,7 @@ It is user job to handle this error however he seems fit. Invalidating the data 
 This is just a concept.
 
 ## how
-The 'obvious' way is to create array 'hidde' descriptor:
+The 'obvious' seems to be creating compile time, implicit array descriptor:
 
 For each instance of an array this macro is creating instance of an array_header and type definition of array_type.
 Information from this header is later used to validate c-style array access.
@@ -38,8 +38,6 @@ struct array_header
 Downfall is that nesting such array in other structures is not possible.
 
 Like usual in this case, accessing array_header or array_data directly result in undefined behaviour.
-
-### usage
 
 ```c
 #include <stdio.h>
